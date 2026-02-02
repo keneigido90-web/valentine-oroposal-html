@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hey beautiful, will you be my valentine wifey</title>
+  <style>
+    :root{
+      --bg:#FFF6F8;
+      --card:#ffffff;
+      --accent:#E91E63;
+      --muted:#7a7a7a;
+    }
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg,#fff 0%, #FFEFF5 60%);
+      padding:24px;
+    }
+    .card{
+      width:100%;max-width:720px;background:var(--card);border-radius:16px;
+      box-shadow:0 10px 30px rgba(233,30,99,0.08);
+      padding:28px;text-align:center;
+    }
+    h1{
+      margin:6px 0 12px;font-size:28px;color:var(--accent);
+      letter-spacing:0.2px;
+    }
+    p.lead{margin:0;color:var(--muted);font-size:15px;}
+    .big-message{
+      font-size:34px;margin:20px 0 16px;font-weight:700;color:#222;
+    }
+    .buttons{margin-top:18px;display:flex;gap:12px;justify-content:center;}
+    button{
+      padding:12px 22px;border-radius:999px;border:2px solid transparent;
+      font-size:16px;cursor:pointer;transition:all .18s ease;
+    }
+    button.yes{
+      background:linear-gradient(90deg,#FF7BAC,#E91E63);color:white;
+      box-shadow:0 6px 18px rgba(233,30,99,0.18);
+    }
+    button.yes:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(233,30,99,0.22);}
+    button.no{
+      background:transparent;color:var(--accent);border-color:#F8C7D6;
+    }
+    .result{
+      margin-top:20px;display:none;align-items:center;gap:18px;flex-direction:column;
+    }
+    .result img{max-width:320px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
+    .message{
+      text-align:left;max-width:640px;color:#333;font-size:16px;line-height:1.5;border-radius:10px;padding:14px;
+      background:linear-gradient(180deg, #fff 0%, #FFF6F9 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .small{font-size:13px;color:var(--muted);margin-top:10px;}
+    .actions{margin-top:14px;display:flex;gap:10px;justify-content:center;}
+    a.button-like{display:inline-block;padding:8px 12px;border-radius:8px;background:#F7EAF0;color:var(--accent);text-decoration:none;border:1px solid #F3D7E3;}
+    @media (max-width:520px){
+      .big-message{font-size:24px}
+      .result img{max-width:260px}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="proposalTitle">
+    <h1 id="proposalTitle">Hey beautiful will you be my valentine</h1>
+    <p class="lead">A small question, a big hope — and a heart that keeps choosing you.</p>
+
+    <div class="big-message">Hey beautiful will you be my valentine?</div>
+
+    <div class="buttons" role="group" aria-label="Choose yes or no">
+      <button class="yes" id="yesBtn" aria-label="Yes">Yes 💖</button>
+      <button class="no" id="noBtn" aria-label="No">No 😢</button>
+    </div>
+
+    <div class="result" id="result" aria-live="polite"></div>
+
+    <p class="small">Tip: Tap a button to reveal a message and a little GIF.</p>
+  </main>
+
+  <script>
+    // GIF sources (publicly hosted)
+    const gifs = {
+      yes: "https://media.giphy.com/media/od5H3PmEG5EVq/giphy.gif", // couples hugging
+      no:  "https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif"  // sad/crying
+    };
+
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const result = document.getElementById('result');
+
+    // The love message you requested, referencing the cab and memories
+    const loveMessage =
+`From the moment I nervously asked for your number in that cab, something inside me shifted — like the world quietly rearranged so we could find each other. That single, small moment led to the laughter we still replay, the quiet talks that became our favorite soundtrack, and the little adventures that now live as warm corners in my memory. Being with you has turned ordinary days into stories I want to tell forever baby. If you say "yes" today, I promise to keep making memories with you — gentle, silly, and true.`;
+
+    function showResult(kind){
+      result.innerHTML = "";
+      result.style.display = "flex";
+      if(kind === "yes"){
+        const img = document.createElement('img');
+        img.src = gifs.yes;
+        img.alt = "Couple hugging gif";
+        const msg = document.createElement('div');
+        msg.className = "message";
+        msg.innerHTML = `<strong>Yes! ❤️</strong><br><br>${loveMessage.replace(/\n/g,'<br>')}`;
+        result.appendChild(img);
+        result.appendChild(msg);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        actions.innerHTML = '<a class="button-like" href="#" id="shareBtn">Share the joy</a>';
+        result.appendChild(actions);
+
+        // optional: wire share button to copy message
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', (e)=>{
+          e.preventDefault();
+          navigator.clipboard && navigator.clipboard.writeText("She said YES! " + loveMessage)
+            .then(()=> alert("Copied a little celebration message to your clipboard."))
+            .catch(()=> alert("You can copy the message manually."));
+        }, {once:true});
+
+      } else {
+        const img = document.createElement('img');
+        img.src = gifs.no;
+        img.alt = "Sad gif";
+        const msg = document.createElement('div');
+        msg.className = "message";
+        msg.innerHTML = `<strong>It's okay. 💙</strong><br><br>I understand, and I'm grateful for the moments we've shared. No matter what, those memories — from that cab to every smile since — mean the world to me.`;
+        result.appendChild(img);
+        result.appendChild(msg);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        actions.innerHTML = '<a class="button-like" href="#" id="okBtn">Okay</a>';
+        result.appendChild(actions);
+
+        document.getElementById('okBtn').addEventListener('click', (e)=>{
+          e.preventDefault();
+          // gentle fade out
+          result.style.transition = "opacity .35s ease";
+          result.style.opacity = 0;
+          setTimeout(()=>{ result.style.display = "none"; result.style.opacity = 1; }, 350);
+        }, {once:true});
+      }
+
+      // simple confetti if yes (light)
+      if(kind === 'yes' && typeof window !== 'undefined'){
+        // small, lightweight confetti effect using emojis briefly
+        const confettiRoot = document.createElement('div');
+        confettiRoot.style.position = 'fixed';
+        confettiRoot.style.left = 0; confettiRoot.style.top = 0; confettiRoot.style.width = '100%'; confettiRoot.style.height = '100%';
+        confettiRoot.style.pointerEvents = 'none';
+        document.body.appendChild(confettiRoot);
+        const emojis = ['💖','🎉','🌸','💫'];
+        for(let i=0;i<18;i++){
+          const e = document.createElement('div');
+          e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+          e.style.position='absolute';
+          e.style.left = Math.random()*100 + '%';
+          e.style.top = '-5%';
+          e.style.fontSize = (12+Math.random()*28)+'px';
+          e.style.opacity = 0.9;
+          e.style.transform = `rotate(${Math.random()*360}deg)`;
+          e.style.transition = `transform 2.2s ease-in, top 2.2s linear, opacity 2.2s linear`;
+          confettiRoot.appendChild(e);
+          setTimeout(()=>{ e.style.top = (80 + Math.random()*20) + '%'; e.style.transform += ' translateY(20px)'; e.style.opacity=0; }, 20 + i*80);
+        }
+        setTimeout(()=> confettiRoot.remove(), 2600);
+      }
+    }
+
+    yesBtn.addEventListener('click', ()=> showResult('yes'));
+    noBtn.addEventListener('click', ()=> showResult('no'));
+  </script>
+</body>
+</html>
